@@ -31,17 +31,3 @@ app.use('/', require('./routes'));
 app.listen(port, () => {
   console.log(`Listening on port: ${port}`);
 });
-
-// mongodb.initDb((err) => {
-//     if(err) {
-//         console.log(err);
-//     }
-//     else{
-//         app.listen(port, () => {
-//             console.log(`Database: \x1b[32mCONNECTED\x1b[0m - Node: \x1b[32mRUNNING\x1b[0m - Listening: \x1b[32mPort:${port}\x1b[0m`);
-//             console.log(`\x1b[94mRoutes available: \x1b[0m`);
-//             console.log(`\x1b[32m++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\x1b[0m`);
-//             console.log(`\n`);
-//           });
-//     }
-// })
