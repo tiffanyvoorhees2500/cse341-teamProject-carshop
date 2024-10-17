@@ -4,10 +4,10 @@ const swaggerAutogen = require('swagger-autogen')();
 const doc = {
   info: {
     title: 'CSE 341 Final Project - API',
-    description: 'CSE 341 Final Project for Tiffany Voorhees and Luke Briggs',
+    description: 'CSE 341 Final Project for Tiffany Voorhees and Luke Briggs and Jonathan Aloya',
   },
   host: 'localhost:3001',
-  schemes: ['https'],
+  schemes: ['http', 'https'],
 };
 
 const outputFile = './swagger.json';

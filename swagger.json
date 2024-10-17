@@ -2,12 +2,13 @@
   "swagger": "2.0",
   "info": {
     "title": "CSE 341 Final Project - API",
-    "description": "CSE 341 Final Project for Tiffany Voorhees and Luke Briggs",
+    "description": "CSE 341 Final Project for Tiffany Voorhees and Luke Briggs and Jonathan Aloya",
     "version": "1.0.0"
   },
   "host": "localhost:3001",
   "basePath": "/",
   "schemes": [
+    "http",
     "https"
   ],
   "paths": {
