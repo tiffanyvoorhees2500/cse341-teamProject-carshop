@@ -1,47 +1,38 @@
 const routes = require('express').Router();
-const carController = require('../controllers/cars.js');
-// const utilities = require('../utilities/');
+const carController = require('../controllers/carController');
+const utilities = require('../validation/');
 // const carRules = require('../utilities/car-validation.js');
 // const { ensureAuth } = require('../utilities/auth.js');
 
 // GET Car Route
-routes.get(
-  '/',
-  carController.getAll,
-//   utilities.handleErrors
-);
-routes.get(
-  '/:carId',
-  carController.getSingle,
-//   utilities.handleErrors
-);
+routes.get('/', carController.getCars, utilities.handleErrors);
+routes.get('/:carId', carController.getCarById, utilities.handleErrors);
 
 routes.post(
   '/',
-//   ensureAuth,
-//   carRules.carValidationRules(),
-//   utilities.validate,
-  carController.addNew,
-//   utilities.handleErrors
+  //   ensureAuth,
+  //   carRules.carValidationRules(),
+  //   utilities.validate,
+  carController.addCar,
+  utilities.handleErrors
 );
 
 // UPDATE Car Route
 routes.put(
   '/:carId',
-//   ensureAuth,
-//   carRules.carValidationRules(),
-//   utilities.validate,
-  carController.editSingle,
-//   utilities.handleErrors
+  //   ensureAuth,
+  //   carRules.carValidationRules(),
+  //   utilities.validate,
+  carController.editCarById,
+  utilities.handleErrors
 );
 
 // DELETE Car Route
 routes.delete(
   '/:carId',
-//   ensureAuth,
-  carController.deleteSingle,
-//   utilities.handleErrors
+  //   ensureAuth,
+  carController.deleteCarById,
+  utilities.handleErrors
 );
-
 
 module.exports = routes;
