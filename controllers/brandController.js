@@ -1,12 +1,12 @@
 const Brand = require('../models/Brand'); // Assuming you have a Brand model
 
 // Get all brands
-const getBrands = async (req, res) => {
+const getBrands = async (req, res,next) => {
   /*
       #swagger.tags=['Brands']
     */
   try {
-    const Brand = await Brand.find();
+    const brands = await Brand.find();
     res.status(200).json(brands);
   } catch (error) {
     next(error);
@@ -41,14 +41,14 @@ const getBrandById = async (req, res, next) => {
 };
 
 // Add a new brand
-const addBrand = async (req, res) => {
+const addBrand = async (req, res, next) => {
   /*
     #swagger.tags=['Brands']
     #swagger.parameters['body'] = {
       in: 'body',
       description: 'Create a new Brand',
       schema: {
-        brandName: 'Ferrari'
+        brandName: 'Honda'
       }
     }
   */

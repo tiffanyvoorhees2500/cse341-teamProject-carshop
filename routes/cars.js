@@ -1,8 +1,8 @@
 const routes = require('express').Router();
 const carController = require('../controllers/carController');
 const utilities = require('../validation/');
-// const carRules = require('../utilities/car-validation.js');
-// const { ensureAuth } = require('../utilities/auth.js');
+const carRules = require('../validation/car-validation.js');
+// const { ensureAuth } = require('../validation/auth.js');
 
 // GET Car Route
 routes.get('/', carController.getCars, utilities.handleErrors);
@@ -11,8 +11,8 @@ routes.get('/:carId', carController.getCarById, utilities.handleErrors);
 routes.post(
   '/',
   //   ensureAuth,
-  //   carRules.carValidationRules(),
-  //   utilities.validate,
+  carRules.carValidationRules(),
+  utilities.validate,
   carController.addCar,
   utilities.handleErrors
 );
@@ -21,8 +21,8 @@ routes.post(
 routes.put(
   '/:carId',
   //   ensureAuth,
-  //   carRules.carValidationRules(),
-  //   utilities.validate,
+  carRules.carValidationRules(),
+  utilities.validate,
   carController.editCarById,
   utilities.handleErrors
 );

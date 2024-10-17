@@ -2,7 +2,7 @@ const Car = require('../models/Car'); // Assuming you have a Car model
 const Brand = require('../models/Brand');
 
 // Get all cars
-const getCars = async (req, res) => {
+const getCars = async (req, res, next) => {
   /*
       #swagger.tags=['Cars']
     */
@@ -42,7 +42,7 @@ const getCarById = async (req, res, next) => {
 };
 
 // Add a new car
-const addCar = async (req, res) => {
+const addCar = async (req, res, next) => {
   /*
     #swagger.tags=['Cars']
     #swagger.parameters['body'] = {
@@ -94,7 +94,7 @@ const addCar = async (req, res) => {
     const savedCar = await Car.create(newCar);
     res.status(201).json(savedCar);
   } catch (error) {
-    res.status(400).json({ message: 'Error adding car', error });
+    next(error)
   }
 };
 
