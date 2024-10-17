@@ -1,15 +1,137 @@
-// Function to get a brand by brand and brandID
-const getBrandByBrandId = async (req, res) => {
-    const { brand, brandId } = req.params;
+const Brand = require('../models/Brand'); // Assuming you have a Brand model
+
+// Get all brands
+const getBrands = async (req, res) => {
+  /*
+      #swagger.tags=['Brands']
+    */
+  try {
+    const Brand = await Brand.find();
+    res.status(200).json(brands);
+  } catch (error) {
+    next(error);
+    // res.status(500).json({ message: 'Error fetching brands', error });
+  }
 };
 
-// Function to add a brand by brand and brandID
-const addBrandByBrandId = async (req, res) => {
-    const { brand, brandId } = req.params;
-    const newBrandData = req.body;
+const getBrandById = async (req, res, next) => {
+  /*
+      #swagger.tags=['Brands']
+    */
+
+  const brandId = req.params.brandId;
+
+  try {
+    const brand = await Brand.findById(brandId).exec();
+
+    // Check if brand exists
+    if (!brand) {
+      return res.status(404).json({
+        error: `Brand with id: '${brandId}' does not exist.`,
+      });
+    }
+
+    res.setHeader('Content-Type', 'application/json');
+    res.status(200).json(brand);
+  } catch (error) {
+    console.log('Error:', error.message);
+    next(error);
+    // res.status(500).json({ error: error.message });
+  }
 };
 
-// Function to delete a brand by brand and brandID
-const deleteBrandByBrandId = async (req, res) => {
-    const { brand, brandId } = req.params;
+// Add a new brand
+const addBrand = async (req, res) => {
+  /*
+    #swagger.tags=['Brands']
+    #swagger.parameters['body'] = {
+      in: 'body',
+      description: 'Create a new Brand',
+      schema: {
+        brandName: 'Ferrari'
+      }
+    }
+  */
+
+try{
+    const savedBrand = await Brand.create(req.body);
+    res.status(201).json(savedBrand);
+  } catch (error) {
+    res.status(400).json({ message: 'Error adding brand', error });
+  }
+};
+
+const editBrandById = async (req, res, next) => {
+  /*
+      #swagger.tags=['Brands']
+      #swagger.parameters['body'] = {
+        in: 'body',
+        description: 'Create a new Brand',
+        schema: {
+          brandName: 'Ferrari'
+        }
+      }
+    */
+  const brandId = req.params.brandId;
+
+  try {
+
+    const updateCriteria = { _id: brandId };
+    const updatedBrand = await Brand.findOneAndUpdate(
+      updateCriteria,
+      {
+        $set: {
+          brandName: req.body.brandName
+          
+        },
+      },
+      { new: true } // Return the updated document
+    );
+
+    if (!updatedBrand) {
+      return res
+        .status(404)
+        .json({ message: 'This brand could not be updated.' });
+    }
+
+    //if all goes well, return accepted status
+    res.status(202).json(updatedBrand);
+  } catch (error) {
+    console.log('Error:', error.message);
+    next(error);
+  }
+};
+
+//DELETE
+const deleteBrandById = async (req, res, next) => {
+  /*
+      #swagger.tags=['Brands']
+    */
+  const brandId = req.params.brandId;
+
+  try {
+    const brand = await Brand.findOneAndDelete({
+      _id: brandId,
+    });
+
+    if (!brand) {
+      return res.status(404).json({
+        message: `You are not authorized to delete that brand.`,
+      });
+    }
+
+    res.status(204).send();
+  } catch (error) {
+    console.log('Error:', error.message);
+    next(error);
+    // res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports = {
+  getBrands,
+  getBrandById,
+  addBrand,
+  editBrandById,
+  deleteBrandById,
 };
