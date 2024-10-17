@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/uplandwave/341-Final"
+    "url": "git+https://github.com/tiffanyvoorhees2500/cse341-teamProject-carshop"
   },
-  "author": "Luke Briggs & Tiffany Voorhees",
+  "author": "Luke Briggs & Tiffany Voorhees & Jonathan Aloya",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/uplandwave/341-Final/issues"
+    "url": "https://github.com/tiffanyvoorhees2500/cse341-teamProject-carshop/issues"
   },
-  "homepage": "https://github.com/uplandwave/341-Final#readme",
+  "homepage": "https://github.com/tiffanyvoorhees2500/cse341-teamProject-carshop#readme",
   "dependencies": {
     "body-parser": "^1.20.3",
     "connect-mongo": "^5.1.0",
