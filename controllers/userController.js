@@ -1,7 +1,7 @@
 const User = require('../models/User'); // Assuming you have a User model
 
 // Get all Users
-const getUsers = async (req, res,next) => {
+const getUsers = async (req, res, next) => {
   /*
       #swagger.tags=['Users']
     */
@@ -56,14 +56,12 @@ const editAdminStatus = async (req, res, next) => {
   const userId = req.params.userId;
 
   try {
-
     const updateCriteria = { _id: userId };
     const updatedUser = await User.findOneAndUpdate(
       updateCriteria,
       {
         $set: {
-          isAdmin: req.body.isAdmin
-          
+          isAdmin: req.body.isAdmin,
         },
       },
       { new: true } // Return the updated document
@@ -76,6 +74,8 @@ const editAdminStatus = async (req, res, next) => {
     }
 
     //if all goes well, return accepted status
+    // and update session user
+    req.session.user.isAdmin = req.body.isAdmin;
     res.status(202).json(updatedUser);
   } catch (error) {
     console.log('Error:', error.message);

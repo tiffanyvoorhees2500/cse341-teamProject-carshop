@@ -1,7 +1,7 @@
 const Brand = require('../models/Brand'); // Assuming you have a Brand model
 
 // Get all brands
-const getBrands = async (req, res,next) => {
+const getBrands = async (req, res, next) => {
   /*
       #swagger.tags=['Brands']
     */
@@ -53,8 +53,18 @@ const addBrand = async (req, res, next) => {
     }
   */
 
-try{
-    const savedBrand = await Brand.create(req.body);
+  const brandName = req.body.brandName;
+  try {
+    const existingBrand = await Brand.findOne({
+      brandName: brandName,
+    });
+    if (existingBrand) {
+      return res.status(400).json({
+        message: `You already have a brand with the name: ${brandName}.  We cannot add it again.`,
+      });
+    }
+
+    const savedBrand = await Brand.create(brandName);
     res.status(201).json(savedBrand);
   } catch (error) {
     res.status(400).json({ message: 'Error adding brand', error });
@@ -68,21 +78,28 @@ const editBrandById = async (req, res, next) => {
         in: 'body',
         description: 'Create a new Brand',
         schema: {
-          brandName: 'Ferrari'
+          brandName: 'Toyota'
         }
       }
     */
   const brandId = req.params.brandId;
 
   try {
+    const existingBrand = await Brand.findOne({
+      brandName: brandName,
+    });
+    if (existingBrand) {
+      return res.status(400).json({
+        message: `You already have a brand with the name: ${brandName}.  We cannot add it again.`,
+      });
+    }
 
     const updateCriteria = { _id: brandId };
     const updatedBrand = await Brand.findOneAndUpdate(
       updateCriteria,
       {
         $set: {
-          brandName: req.body.brandName
-          
+          brandName: req.body.brandName,
         },
       },
       { new: true } // Return the updated document

@@ -173,7 +173,6 @@ const deleteCarById = async (req, res, next) => {
       _id: carId,
     });
 
-    console.log(car);
     if (!car) {
       return res.status(404).json({
         message: `You are not authorized to delete that car.`,
