@@ -1,11 +1,19 @@
 const router = require('express').Router();
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('../swagger.json');
 
+router.use('/', require('./auth'));
 router.use('/', require('./swagger'));
 router.use('/cars', require('./cars'));
 router.use('/brands', require('./brands'));
+router.use('/users', require('./users'));
 
 router.get('/', (req, res) => {
-  res.send('Welcome to Team Car Shop! We will have a homepage up soon.');
+  res.send(
+    req.session.user !== undefined
+      ? `${req.session.user.displayName}: Welcome to Team Car Shop`
+      : 'Logged Out'
+  );
 });
 
 module.exports = router;
