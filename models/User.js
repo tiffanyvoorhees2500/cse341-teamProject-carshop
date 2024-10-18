@@ -24,8 +24,11 @@ const UserSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  isAdmin: {
-    type: Boolean,
+  userType: {
+    type: String,
+    enum: ['Customer', 'Employee', 'Admin'],
+    required: true,
+    default: 'Customer'
   },
 });
 

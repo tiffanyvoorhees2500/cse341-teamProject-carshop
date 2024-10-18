@@ -1,16 +1,23 @@
 module.exports = {
-  ensureAuth: (req, res, next) => {
+  ensureLogin: (req, res, next) => {
     if (req.session.user === undefined) {
-      res.status(401).json({ message: 'You are not authorized.' });
+      res.status(401).json({ message: 'You must be logged in to make changes.' });
     } else {
       return next();
     }
   },
   ensureAdmin: (req, res, next) => {
-    if (req.session.user.isAdmin === undefined || req.session.user.isAdmin === false) {
-      res.status(401).json({ message: 'You are not authorized.' });
-    } else {
+    if (req.session.user.userType === 'Admin') {
       return next();
+    } else {
+      res.status(401).json({ message: 'You must be an admin to make these changes.' });
+    }
+  },
+  ensureEmployee: (req,res,next) => {
+    if(req.session.user.userType === "Employee" || req.session.user.userType === "Admin"){
+      return next()
+    }else{
+      res.status(401).json({message: 'You must be an employee or an admin to make these changes.'});
     }
   },
 };

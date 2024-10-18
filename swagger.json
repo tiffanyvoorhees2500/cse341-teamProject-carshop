@@ -5,10 +5,10 @@
     "description": "CSE 341 Final Project for Tiffany Voorhees and Luke Briggs and Jonathan Aloya",
     "version": "1.0.0"
   },
-  "host": "cse341-teamproject-carshop.onrender.com",
+  "host": "localhost:3001",
   "basePath": "/",
   "schemes": [
-    "https"
+    "http"
   ],
   "paths": {
     "/": {
@@ -325,7 +325,7 @@
               "properties": {
                 "brandName": {
                   "type": "string",
-                  "example": "Ferrari"
+                  "example": "Toyota"
                 }
               }
             }
@@ -334,6 +334,9 @@
         "responses": {
           "202": {
             "description": "Accepted"
+          },
+          "400": {
+            "description": "Bad Request"
           },
           "401": {
             "description": "Unauthorized"
@@ -441,13 +444,13 @@
           {
             "name": "body",
             "in": "body",
-            "description": "Make a user an admin",
+            "description": "Change user Type",
             "schema": {
               "type": "object",
               "properties": {
-                "isAdmin": {
-                  "type": "boolean",
-                  "example": true
+                "userType": {
+                  "type": "string",
+                  "example": "Employee"
                 }
               }
             }
@@ -476,6 +479,173 @@
         "parameters": [
           {
             "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          }
+        }
+      }
+    },
+    "/reviews/": {
+      "get": {
+        "tags": [
+          "Reviews"
+        ],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Reviews"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Create a new Review",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "carId": {
+                  "type": "string",
+                  "example": "any"
+                },
+                "rating": {
+                  "type": "number",
+                  "example": 1
+                },
+                "comment": {
+                  "type": "string",
+                  "example": "This car is a lemon"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          }
+        }
+      }
+    },
+    "/reviews/{reviewId}": {
+      "get": {
+        "tags": [
+          "Reviews"
+        ],
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "reviewId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Reviews"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "reviewId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Create a new Review",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "rating": {
+                  "type": "number",
+                  "example": 5
+                },
+                "comment": {
+                  "type": "string",
+                  "example": "This car runs great!"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Accepted"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Reviews"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "reviewId",
             "in": "path",
             "required": true,
             "type": "string"

@@ -1,13 +1,16 @@
 const Review = require('../models/Review'); // Assuming you have a Review model
+const Car = require('../models/Car');
+const mongoose = require('mongoose');
+const ObjectId = mongoose.Types.ObjectId;
 
 // Get all Review
-const getReview = async (req, res, next) => {
+const getReviews = async (req, res, next) => {
   /*
-      #swagger.tags=['Review']
+      #swagger.tags=['Reviews']
     */
   try {
-    const Review = await Review.find();
-    res.status(200).json(Review);
+    const review = await Review.find();
+    res.status(200).json(review);
   } catch (error) {
     next(error);
     // res.status(500).json({ message: 'Error fetching Review', error });
@@ -16,7 +19,7 @@ const getReview = async (req, res, next) => {
 
 const getReviewById = async (req, res, next) => {
   /*
-      #swagger.tags=['Review']
+      #swagger.tags=['Reviews']
     */
 
   const reviewId = req.params.reviewId;
@@ -43,28 +46,49 @@ const getReviewById = async (req, res, next) => {
 // Add a new review
 const addReview = async (req, res, next) => {
   /*
-    #swagger.tags=['Review']
+    #swagger.tags=['Reviews']
     #swagger.parameters['body'] = {
       in: 'body',
       description: 'Create a new Review',
       schema: {
-        reviewName: 'Honda'
+        carId: "any",
+        rating: 1,
+        comment: "This car is a lemon"
       }
     }
   */
 
-  const reviewName = req.body.reviewName;
+  const { rating, comment } = req.body;
+  const carId = ObjectId.createFromHexString(req.body.carId);
+  const userId = req.session.user._id;
+
   try {
+    const existingCar = await Car.findOne({
+      _id: carId,
+    });
+    if (!existingCar) {
+      return res
+        .status(400)
+        .json({ message: `The car you trying to review does not exist.` });
+    }
+
     const existingReview = await Review.findOne({
-      reviewName: reviewName,
+      car: carId,
+      user: userId,
     });
     if (existingReview) {
       return res.status(400).json({
-        message: `You already have a review with the name: ${reviewName}.  We cannot add it again.`,
+        message: `You already have a review with the id: ${existingReview._id}.  You cannot add another review.`,
       });
     }
 
-    const savedReview = await Review.create(reviewName);
+    const savedReview = await Review.create({
+      user: userId,
+      car: carId,
+      rating: rating,
+      comment: comment,
+    });
+
     res.status(201).json(savedReview);
   } catch (error) {
     res.status(400).json({ message: 'Error adding review', error });
@@ -73,33 +97,38 @@ const addReview = async (req, res, next) => {
 
 const editReviewById = async (req, res, next) => {
   /*
-      #swagger.tags=['Review']
+      #swagger.tags=['Reviews']
       #swagger.parameters['body'] = {
         in: 'body',
         description: 'Create a new Review',
         schema: {
-          reviewName: 'Toyota'
+          rating: 5,
+          comment: "This car runs great!"
         }
       }
     */
-  const reviewId = req.params.reviewId;
+  const reviewId = ObjectId.createFromHexString(req.params.reviewId);
+  const userId = ObjectId.createFromHexString(req.session.user._id);
+  const { rating, comment } = req.body;
 
   try {
     const existingReview = await Review.findOne({
-      reviewName: reviewName,
+      user: userId,
+      _id: reviewId,
     });
-    if (existingReview) {
+    if (!existingReview) {
       return res.status(400).json({
-        message: `You already have a review with the name: ${reviewName}.  We cannot add it again.`,
+        message: `We did not find a review with id: ${reviewId} for you.`,
       });
     }
 
-    const updateCriteria = { _id: reviewId };
+    const updateCriteria = { _id: reviewId, user: userId };
     const updatedReview = await Review.findOneAndUpdate(
       updateCriteria,
       {
         $set: {
-          reviewName: req.body.reviewName,
+          rating: rating,
+          comment: comment,
         },
       },
       { new: true } // Return the updated document
@@ -122,7 +151,7 @@ const editReviewById = async (req, res, next) => {
 //DELETE
 const deleteReviewById = async (req, res, next) => {
   /*
-      #swagger.tags=['Review']
+      #swagger.tags=['Reviews']
     */
   const reviewId = req.params.reviewId;
 
@@ -146,7 +175,7 @@ const deleteReviewById = async (req, res, next) => {
 };
 
 module.exports = {
-  getReview,
+  getReviews,
   getReviewById,
   addReview,
   editReviewById,

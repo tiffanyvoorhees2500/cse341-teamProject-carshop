@@ -2,13 +2,24 @@ const routes = require('express').Router();
 const brandController = require('../controllers/brandController');
 const utilities = require('../utilities/index.js');
 const brandRules = require('../validation/brand-validation.js');
-const { ensureAuth, ensureAdmin } = require('../validation/auth-validation.js');
+const {
+  ensureLogin,
+  ensureEmployee,
+  ensureAdmin,
+} = require('../validation/auth-validation.js');
 
 // GET Brand Route... Must be logged in to see
-routes.get('/', ensureAuth, brandController.getBrands, utilities.handleErrors);
+routes.get(
+  '/',
+  ensureLogin,
+  ensureEmployee,
+  brandController.getBrands,
+  utilities.handleErrors
+);
 routes.get(
   '/:brandId',
-  ensureAuth,
+  ensureLogin,
+  ensureEmployee,
   brandController.getBrandById,
   utilities.handleErrors
 );
@@ -16,7 +27,7 @@ routes.get(
 // POST Brand... Must be logged and admin to add new brands
 routes.post(
   '/',
-  ensureAuth,
+  ensureLogin,
   ensureAdmin,
   brandRules.brandValidationRules(),
   utilities.validate,
@@ -27,7 +38,7 @@ routes.post(
 // UPDATE Brand Route... Must be logged in and admin to edit brands
 routes.put(
   '/:brandId',
-  ensureAuth,
+  ensureLogin,
   ensureAdmin,
   brandRules.brandValidationRules(),
   utilities.validate,
@@ -38,7 +49,7 @@ routes.put(
 // DELETE Brand Route... Must be logged in and admin to edit brands
 routes.delete(
   '/:brandId',
-  ensureAuth,
+  ensureLogin,
   ensureAdmin,
   brandController.deleteBrandById,
   utilities.handleErrors

@@ -6,7 +6,7 @@ const getUsers = async (req, res, next) => {
       #swagger.tags=['Users']
     */
   try {
-    const users = await user.find();
+    const users = await User.find();
     res.status(200).json(users);
   } catch (error) {
     next(error);
@@ -42,14 +42,14 @@ const getUserById = async (req, res, next) => {
 
 // Add a new User... done when person logs into google
 
-const editAdminStatus = async (req, res, next) => {
+const editUserType = async (req, res, next) => {
   /*
       #swagger.tags=['Users']
       #swagger.parameters['body'] = {
         in: 'body',
-        description: 'Make a user an admin',
+        description: 'Change user Type',
         schema: {
-          isAdmin: true
+          userType: "Employee"
         }
       }
     */
@@ -61,7 +61,7 @@ const editAdminStatus = async (req, res, next) => {
       updateCriteria,
       {
         $set: {
-          isAdmin: req.body.isAdmin,
+          userType: req.body.userType,
         },
       },
       { new: true } // Return the updated document
@@ -75,7 +75,7 @@ const editAdminStatus = async (req, res, next) => {
 
     //if all goes well, return accepted status
     // and update session user
-    req.session.user.isAdmin = req.body.isAdmin;
+    req.session.user.userType = req.body.userType;
     res.status(202).json(updatedUser);
   } catch (error) {
     console.log('Error:', error.message);
@@ -112,6 +112,6 @@ const deleteUserById = async (req, res, next) => {
 module.exports = {
   getUsers,
   getUserById,
-  editAdminStatus,
+  editUserType,
   deleteUserById,
 };

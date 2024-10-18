@@ -2,13 +2,13 @@ const routes = require('express').Router();
 const reviewController = require('../controllers/reviewController');
 const utilities = require('../utilities/index.js');
 const reviewRules = require('../validation/review-validation.js');
-const { ensureAuth, ensureAdmin } = require('../validation/auth-validation.js');
+const { ensureLogin, ensureAdmin } = require('../validation/auth-validation.js');
 
 // GET Review Route... Must be logged in to see
-routes.get('/', ensureAuth, reviewController.getReviews, utilities.handleErrors);
+routes.get('/', reviewRules.validateGetReview, reviewController.getReviews, utilities.handleErrors);
 routes.get(
   '/:reviewId',
-  ensureAuth,
+  reviewRules.validateGetReview, 
   reviewController.getReviewById,
   utilities.handleErrors
 );
@@ -16,9 +16,8 @@ routes.get(
 // POST Review... Must be logged and admin to add new reviews
 routes.post(
   '/',
-  ensureAuth,
-  ensureAdmin,
-  reviewRules.reviewValidationRules(),
+  ensureLogin,
+  reviewRules.validateAddReview,
   utilities.validate,
   reviewController.addReview,
   utilities.handleErrors
@@ -27,9 +26,8 @@ routes.post(
 // UPDATE Review Route... Must be logged in and admin to edit reviews
 routes.put(
   '/:reviewId',
-  ensureAuth,
-  ensureAdmin,
-  reviewRules.reviewValidationRules(),
+  ensureLogin,
+  reviewRules.validateAddReview,
   utilities.validate,
   reviewController.editReviewById,
   utilities.handleErrors
@@ -38,7 +36,8 @@ routes.put(
 // DELETE Review Route... Must be logged in and admin to edit reviews
 routes.delete(
   '/:reviewId',
-  ensureAuth,
+  reviewRules.validateDeleteReview,
+  ensureLogin,
   ensureAdmin,
   reviewController.deleteReviewById,
   utilities.handleErrors

@@ -2,16 +2,6 @@ const { body, param } = require('express-validator');
 
 // Validation for adding a review
 const validateAddReview = [
-    body('user')
-        .isString()
-        .withMessage('User ID must be a string')
-        .notEmpty()
-        .withMessage('User ID is required'),
-    body('car')
-        .isString()
-        .withMessage('Car ID must be a string')
-        .notEmpty()
-        .withMessage('Car ID is required'),
     body('rating')
         .isNumeric()
         .withMessage('Rating must be a number')
@@ -26,11 +16,6 @@ const validateAddReview = [
 
 // Validation for getting a review by review and reviewId
 const validateGetReview = [
-    param('review')
-        .isString()
-        .withMessage('Review must be a string')
-        .notEmpty()
-        .withMessage('Review is required'),
     param('reviewId')
         .isString()
         .withMessage('Review ID must be a string')
@@ -40,11 +25,6 @@ const validateGetReview = [
 
 // Validation for deleting a review by review and reviewId
 const validateDeleteReview = [
-    param('review')
-        .isString()
-        .withMessage('Review must be a string')
-        .notEmpty()
-        .withMessage('Review is required'),
     param('reviewId')
         .isString()
         .withMessage('Review ID must be a string')

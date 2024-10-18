@@ -7,6 +7,7 @@ router.use('/', require('./swagger'));
 router.use('/cars', require('./cars'));
 router.use('/brands', require('./brands'));
 router.use('/users', require('./users'));
+router.use('/reviews', require('./reviews'));
 
 router.get('/', (req, res) => {
   res.send(

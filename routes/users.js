@@ -2,19 +2,19 @@ const routes = require('express').Router();
 const userController = require('../controllers/userController');
 const utilities = require('../utilities/index.js');
 const userRules = require('../validation/user-validation.js');
-const { ensureAuth, ensureAdmin } = require('../validation/auth-validation.js');
+const { ensureLogin, ensureAdmin } = require('../validation/auth-validation.js');
 
 // GET user Route... must be logged in and an admin to see users
 routes.get(
   '/',
-  ensureAuth,
+  ensureLogin,
   ensureAdmin,
   userController.getUsers,
   utilities.handleErrors
 );
 routes.get(
   '/:userId',
-  ensureAuth,
+  ensureLogin,
   ensureAdmin,
   userController.getUserById,
   utilities.handleErrors
@@ -26,18 +26,18 @@ routes.get(
 // Must be logged in and an admin to change admin status
 routes.put(
   '/:userId',
-  ensureAuth,
+  ensureLogin,
   ensureAdmin,
   userRules.userValidationRules(),
   utilities.validate,
-  userController.editAdminStatus,
+  userController.editUserType,
   utilities.handleErrors
 );
 
 // DELETE user Route
 routes.delete(
   '/:userId',
-  ensureAuth,
+  ensureLogin,
   ensureAdmin,
   userController.deleteUserById,
   utilities.handleErrors
