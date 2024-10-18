@@ -5,10 +5,10 @@
     "description": "CSE 341 Final Project for Tiffany Voorhees and Luke Briggs and Jonathan Aloya",
     "version": "1.0.0"
   },
-  "host": "localhost:3001",
+  "host": "cse341-teamproject-carshop.onrender.com",
   "basePath": "/",
   "schemes": [
-    "http"
+    "https"
   ],
   "paths": {
     "/": {

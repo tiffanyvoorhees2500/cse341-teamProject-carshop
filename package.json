@@ -1,12 +1,13 @@
 {
-  "name": "team-car-shop",
+  "name": "bv-car-shop",
   "version": "1.0.0",
   "description": "Api for common car information you might like to know",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "cross-env NODE_ENV=production node swagger",
-    "dev": "cross-env NODE_ENV=development nodemon --ignore swagger.json swagger.js"
+    "start": "cross-env NODE_ENV=production node server",
+    "dev": "cross-env NODE_ENV=development nodemon server",
+    "swagger": "node swagger.js"
   },
   "repository": {
     "type": "git",
