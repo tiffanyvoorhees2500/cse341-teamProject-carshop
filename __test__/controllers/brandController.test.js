@@ -135,12 +135,18 @@ describe('addBrand', () => {
 
 // PUT edit brand by ID
 describe('editBrandById', () => {
+
+    beforeEach(() => {
+        jest.clearAllMocks();
+    }) 
     it('should update a brand and return status 202', async () =>{
-        let mockBrand = {_id: '1', brandName: 'Toyota'};
+        let mockBrand = {_id: {
+      "$oid": "670febee2c904f621ec06b0b"
+  }, brandName: 'Toyota'};
         Brand.findOneAndUpdate.mockResolvedValue(mockBrand);
 
         const req = {
-            params: {brandId: '1'},
+            params: {brandId: '670febee2c904f621ec06b0b'},
             body: {brandName: 'Toyota'},
         };
         const res = {
@@ -152,7 +158,7 @@ describe('editBrandById', () => {
         await editBrandById(req, res, next);
 
         expect(Brand.findOneAndUpdate).toHaveBeenCalledWith(
-            {_id: '1'}, 
+            {_id: "670febee2c904f621ec06b0b"}, 
             {$set: {brandName: 'Toyota'}},
             {new: true}
         );
@@ -164,7 +170,7 @@ describe('editBrandById', () => {
         Brand.findOneAndUpdate.mockResolvedValue(null);
 
         const req = {
-            params: {brandId: '1'}, 
+            params: {brandId: '670febee2c904f621ec06b0b'}, 
             body: {brandName: 'Toyota'},
         };
         const res = {
@@ -176,7 +182,7 @@ describe('editBrandById', () => {
         await editBrandById(req, res, next);
 
         expect(Brand.findOneAndUpdate).toHaveBeenCalledWith(
-            {_id: '1'}, 
+            {_id: '670febee2c904f621ec06b0b'}, 
             {$set: {brandName: 'Toyota'}},
             {new: true}
         );
