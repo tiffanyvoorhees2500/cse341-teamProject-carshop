@@ -22,7 +22,7 @@ const getBrandById = async (req, res, next) => {
   const brandId = req.params.brandId;
 
   try {
-    const brand = await Brand.findById(brandId).exec();
+    const brand = await Brand.findById(brandId);
 
     // Check if brand exists
     if (!brand) {
@@ -34,7 +34,7 @@ const getBrandById = async (req, res, next) => {
     res.setHeader('Content-Type', 'application/json');
     res.status(200).json(brand);
   } catch (error) {
-    console.log('Error:', error.message);
+    console.log('Error:', error?.message || error);
     next(error);
     // res.status(500).json({ error: error.message });
   }
@@ -60,7 +60,7 @@ const addBrand = async (req, res, next) => {
     });
     if (existingBrand) {
       return res.status(400).json({
-        message: `You already have a brand with the name: ${brandName}.  We cannot add it again.`,
+        message: `You already have a brand with the name: ${brandName}. We cannot add it again.`,
       });
     }
 
@@ -83,11 +83,10 @@ const editBrandById = async (req, res, next) => {
       }
     */
   const brandId = req.params.brandId;
+  const {brandName} = req.body;
 
   try {
-    const existingBrand = await Brand.findOne({
-      brandName: brandName,
-    });
+    const existingBrand = await Brand.findOne({brandName});
     if (existingBrand) {
       return res.status(400).json({
         message: `You already have a brand with the name: ${brandName}.  We cannot add it again.`,
@@ -98,9 +97,7 @@ const editBrandById = async (req, res, next) => {
     const updatedBrand = await Brand.findOneAndUpdate(
       updateCriteria,
       {
-        $set: {
-          brandName: req.body.brandName,
-        },
+        $set: { brandName},
       },
       { new: true } // Return the updated document
     );
