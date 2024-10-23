@@ -1,3 +1,5 @@
+// this is my code ive been working on
+
 const Brand = require('../models/Brand'); // Assuming you have a Brand model
 
 // Get all brands
