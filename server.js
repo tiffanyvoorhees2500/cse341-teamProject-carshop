@@ -20,6 +20,9 @@ connectDB();
 
 const port = process.env.PORT || 3001;
 
+app.use(express.static('public'));
+
+
 app.use(bodyParser.json());
 app.use(
   session({
@@ -51,5 +54,5 @@ app.use(cors({ origin: '*' }))
 app.use('/', require('./routes'));
 
 app.listen(port, () => {
-  console.log(`Listening on port: ${port}`);
+  console.log(`App listening on http://localhost:${port}`);
 });
