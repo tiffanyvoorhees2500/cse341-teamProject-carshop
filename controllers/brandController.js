@@ -93,7 +93,7 @@ const editBrandById = async (req, res, next) => {
       });
     }
 
-    const updateCriteria = { _id: brandId };
+    const updateCriteria = { _id: brandId};
     const updatedBrand = await Brand.findOneAndUpdate(
       updateCriteria,
       {
