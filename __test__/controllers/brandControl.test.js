@@ -3,7 +3,7 @@ const {getBrands, getBrandById, addBrand, editBrandById, deleteBrandById} = requ
 const Brand = require('../../models/Brand');
 
 
-// Mock the Brand model's methods
+
 jest.mock('../../models/Brand');
 
 
