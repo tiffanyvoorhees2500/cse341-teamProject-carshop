@@ -1,130 +1,111 @@
-# Team Car Shop API Documentation
+# **Team Car Shop API Documentation**
 
-This API allows users to interact with car, brand, user, and review data. It also provides authentication and Swagger documentation for easy API exploration.
+Welcome to the **Team Car Shop Api**, your gateway to managing car, brand, user, and review data. Authentication is required for certain operations. A homepage and Swagger UI is available for easy exploration.
 
-## Base URL:
+## **Base URL**
 
-[Site on Render](https://cse341-teamproject-carshop.onrender.com/)
+[**Team Car Shop on Render**](https://cse341-teamproject-carshop.onrender.com)
 
-## Swagger Documentation: 
-Use the `/api-docs` route for an interactive view of all API endpoints and their expected parameters. Or try this link:
-[Render site opened to Swagger Documentation ](https://cse341-teamproject-carshop.onrender.com/api-docs)
+## **Our Homepage**
 
-## Endpoints
+Unlike most Api you might use while building projects, we wanted ours to have a built in landing page. (Mostly because we don’t have a website like other Api's ;) This page gives you some quick information, like if you are logged in or not, and also gives you quick links.
+- `/login`: Login
+- `/logout`: Logout
+- `/api-docs`: Visit Swagger UI
+- `documentation`: Link to documentation
 
-### 1. **Authentication**
+Besides these few quick links the Api can be used as normal, either by adding `/yourWantend/path/orMaybeCar:ID` in the url or with Swagger Ui. 
 
-- **URL**: `/auth`
-    
-- **Method**: Various (depending on the authentication flow)
-    
-- **Description**: Manages user authentication and authorization.
-    
-- **Available Operations**:
-    
-    - `/login`
-    - `/logout`
-
-### 2. **Swagger API Documentation**
-
-- **URL**: `/api-docs`
-    
-- **Method**: `GET`
-    
-- **Description**: Serves the Swagger UI to explore and test API endpoints interactively.
-    
-- **Usage**: Navigate to `/api-docs` in your browser to view and use the Swagger UI.
-    
-
-### 3. **Cars**
-
-- **URL**: `/cars`
-    
-- **Method**: Various (`GET`, `POST`, `PUT`, `DELETE`)
-    
-- **Description**: Provides CRUD operations for car data.
-    
-- **Available Operations**:
-    
-    - `GET /cars`: Retrieves all cars.
-    - `GET /cars/:id`: Retrieves a specific car by its ID.
-    - `POST /cars`: Adds a new car.
-    - `PUT /cars/:id`: Updates an existing car by its ID.
-    - `DELETE /cars/:id`: Deletes a car by its ID.
-
-### 4. **Brands**
-
-- **URL**: `/brands`
-    
-- **Method**: Various (`GET`, `POST`, `PUT`, `DELETE`)
-    
-- **Description**: Provides CRUD operations for car brand data.
-    
-- **Available Operations**:
-    
-    - `GET /brands`: Retrieves all car brands.
-    - `GET /brands/:id`: Retrieves a specific brand by its ID.
-    - `POST /brands`: Adds a new brand.
-    - `PUT /brands/:id`: Updates an existing brand by its ID.
-    - `DELETE /brands/:id`: Deletes a brand by its ID.
-
-### 5. **Users**
-
-- **URL**: `/users`
-    
-- **Method**: Various (`GET`, `POST`, `PUT`, `DELETE`)
-    
-- **Description**: Manages user data and profiles.
-    
-- **Available Operations**:
-    
-    - `GET /users`: Retrieves all users.
-    - `GET /users/:id`: Retrieves a specific user by their ID.
-    - `PUT /users/:id`: Updates an existing user by their ID.
-    - `DELETE /users/:id`: Deletes a user by their ID.
-
-### 6. **Reviews**
-
-- **URL**: `/reviews`
-    
-- **Method**: Various (`GET`, `POST`, `PUT`, `DELETE`)
-    
-- **Description**: Provides CRUD operations for user reviews of cars and brands.
-    
-- **Available Operations**:
-    
-    - `GET /reviews`: Retrieves all reviews.
-    - `GET /reviews/:id`: Retrieves a specific review by its ID.
-    - `POST /reviews`: Adds a new review.
-    - `PUT /reviews/:id`: Updates an existing review by its ID.
-    - `DELETE /reviews/:id`: Deletes a review by its ID.
-
-### 7. **Home Route**
-
-- **URL**: `/`
-- **Method**: `GET`
-- **Description**: Provides a simple welcome message.
-- **Response**:
-    - If the user is logged in: Returns a welcome message with the user's display name.
-    - If the user is logged out: Returns a "Logged Out" message.
-
-**Example Response**:
-```
-JohnDoe: Welcome to Team Car Shop
-```
+![Homepage-View](./public/img/home.png)
 
 ---
 
-### Notes:
+## **API Endpoints**
 
-- **Authentication**: You need to be logged in to access certain routes (e.g., `POST`, `PUT`, and `DELETE` requests).
+### 1. **Authentication**
 
-## Common Error Responses
+- **Base URL**: `/`
+- **Description**: Manages user login and logout.
+- **Endpoints**:
+    - `GET /login`: Start authentication.
+    - `GET /logout`: Logout the user.
 
-- **400 Bad Request**: Invalid input.
-- **404 Not Found**: Resource not found.
-- **500 Internal Server Error**: Unexpected error.
+---
 
-### Created By
+### 2. **Cars**
 
-Tiffany Voorhees & Luke Briggs & Jonathan Aloya
+- **Base URL**: `/cars`
+- **Description**: Perform CRUD operations on cars.
+- **Endpoints**:
+    - `GET /cars`: Get all cars.
+    - `GET /cars/:id`: Get a car by its ID.
+    - `POST /cars`: Add a new car (requires authentication).
+    - `PUT /cars/:id`: Update a car (requires authentication).
+    - `DELETE /cars/:id`: Delete a car (requires authentication).
+
+---
+
+### 3. **Brands**
+
+- **Base URL**: `/brands`
+- **Description**: Manage car brands.
+- **Endpoints**:
+    - `GET /brands`: Get all car brands.
+    - `GET /brands/:id`: Get a brand by its ID.
+    - `POST /brands`: Add a new brand (requires authentication).
+    - `PUT /brands/:id`: Update a brand (requires authentication).
+    - `DELETE /brands/:id`: Delete a brand (requires authentication).
+
+---
+
+### 4. **Users**
+
+- **Base URL**: `/users`
+- **Description**: Manage user data and profiles.
+- **Endpoints**:
+    - `GET /users`: Get all users.
+    - `GET /users/:id`: Get a user by their ID.
+    - `PUT /users/:id`: Update user info (requires authentication).
+    - `DELETE /users/:id`: Delete a user (requires authentication).
+
+---
+
+### 5. **Reviews**
+
+- **Base URL**: `/reviews`
+- **Description**: Manage car and brand reviews.
+- **Endpoints**:
+    - `GET /reviews`: Get all reviews.
+    - `GET /reviews/:id`: Get a review by its ID.
+    - `POST /reviews`: Add a review (requires authentication).
+    - `PUT /reviews/:id`: Update a review (requires authentication).
+    - `DELETE /reviews/:id`: Delete a review (requires authentication).
+
+---
+
+### 6. **Home Route**
+
+- **URL**: `/`
+- **Method**: `GET`
+- **Description**: Api homepage.
+- **Endpoints**
+	- `/login`: Login
+	- `/logout`: Logout
+	- `/api-docs`: Visit Swagger UI
+	- `documentation`: Link to documentation
+
+---
+
+## **Errors You Might See**
+
+- **400 Bad Request**: Invalid input or missing required fields.
+- **404 Not Found**: The requested resource doesn't exist.
+- **500 Internal Server Error**: Something went wrong on the server.
+
+---
+
+### **Created By**
+
+Tiffany Voorhees, Luke Briggs & Jonathan Aloya
+
+---
