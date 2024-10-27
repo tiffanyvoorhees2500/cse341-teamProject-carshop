@@ -95,7 +95,7 @@ const deleteUserById = async (req, res, next) => {
       _id: userId,
     });
 
-    if (!User) {
+    if (!user) {
       return res.status(404).json({
         message: `You are not authorized to delete that User.`,
       });
