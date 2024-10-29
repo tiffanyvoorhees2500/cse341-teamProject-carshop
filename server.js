@@ -10,7 +10,7 @@ const MongoStore = require('connect-mongo');
 const connectDB = require('./data/database');
 const app = express();
 
-// Load Config
+// Load Config now 
 dotenv.config({ path: './.env' });
 
 // Passport Config
