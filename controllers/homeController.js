@@ -53,7 +53,7 @@ exports.buildHome = (req, res) => {
         </div>
     </body>
     <footer>
-        <p>341-Final || Created by Tiffany Voorhees, Luke Briggs & Jonathan Aloya | 2024 | Api for Education |
+        <p>341-Final || Created by Tiffany Voorhees, Luke Briggs, Jonathan Aloya & Emmanuel Ekenedo | 2024 | Api for Education |
         <p class="right">Repo <a href="https://github.com/tiffanyvoorhees2500/cse341-teamProject-carshop">Check out our GitHub repo</a></p>
     </footer>
     </html>
