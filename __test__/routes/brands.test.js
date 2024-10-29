@@ -68,26 +68,26 @@ describe('Brand Route Middleware Tests', () => {
       brandName: 'Toyota',
     };
 
-    // Act - Perform the GET request using supertest
+    // Act - Perform the PUT request using supertest
     await request(app).put('/brands/670febee2c904f621ec06b0b');
 
     // Assert - Check that middleware functions were called
     expect(ensureLogin).toHaveBeenCalled();
-    expect(ensureEmployee).toHaveBeenCalled();
+    expect(ensureAdmin).toHaveBeenCalled();
   });
 
-  it('should apply ensureLogin and ensureEmployee middleware on PUT /brands/brandId', async () => {
+  it('should apply ensureLogin and ensureEmployee middleware on DELETE /brands/brandId', async () => {
     // Arrange - Set up the mock data and return value for Brand.find
     const mockUpdatedBrand = {
       _id: { $oid: '670febee2c904f621ec06b0b' },
       brandName: 'Toyota',
     };
 
-    // Act - Perform the GET request using supertest
+    // Act - Perform the DELETE request using supertest
     await request(app).delete('/brands/670febee2c904f621ec06b0b');
 
     // Assert - Check that middleware functions were called
     expect(ensureLogin).toHaveBeenCalled();
-    expect(ensureEmployee).toHaveBeenCalled();
+    expect(ensureAdmin).toHaveBeenCalled();
   });
 });
