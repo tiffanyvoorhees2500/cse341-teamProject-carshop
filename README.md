@@ -106,6 +106,6 @@ Besides these few quick links the Api can be used as normal, either by adding `/
 
 ### **Created By**
 
-Tiffany Voorhees, Luke Briggs & Jonathan Aloya
+Tiffany Voorhees, Luke Briggs, Jonathan Aloya & Emmanuel Ekenedo
 
 ---
