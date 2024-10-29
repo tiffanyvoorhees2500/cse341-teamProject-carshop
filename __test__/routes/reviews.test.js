@@ -1,15 +1,15 @@
 const request = require('supertest');
 const express = require('express');
 const reviewRoutes = require('../../routes/reviews');
-const Review = require('../../models/Review');
+const reviewController = require('../../controllers/reviewController');
 const {
   ensureLogin,
   ensureAdmin,
 } = require('../../validation/auth-validation');
 const reviewRules = require('../../validation/review-validation');
-const utilities = require('../../utilities');
+const utilities = require('../../utilities/index');
 
-// Apply mocks to modules
+// Mock the required middleware and controller methods
 jest.mock('../../validation/auth-validation', () => ({
   ensureLogin: jest.fn((req, res, next) => next()),
   ensureAdmin: jest.fn((req, res, next) => next()),
@@ -21,76 +21,82 @@ jest.mock('../../validation/review-validation', () => ({
   validateDeleteReview: jest.fn((req, res, next) => next()),
 }));
 
-jest.mock('../../utilities', () => ({
-  handleErrors: jest.fn((req, res, next) => next()),
+jest.mock('../../utilities/index', () => ({
+  handleErrors: jest.fn((err, req, res, next) => next(err)),
   validate: jest.fn((req, res, next) => next()),
 }));
 
-// Mock Review model
-jest.mock('../../models/Review', () => ({
-  find: jest.fn(),
-  findById: jest.fn(),
-  create: jest.fn(),
-  findByIdAndUpdate: jest.fn(),
-  findByIdAndDelete: jest.fn(),
+jest.mock('../../controllers/reviewController', () => ({
+  getReviews: jest.fn((req, res) => res.status(200).json({ message: 'Reviews fetched' })),
+  getReviewById: jest.fn((req, res) => res.status(200).json({ message: 'Review fetched by ID' })),
+  addReview: jest.fn((req, res) => res.status(201).json({ message: 'Review added' })),
+  editReviewById: jest.fn((req, res) => res.status(202).json({ message: 'Review updated' })),
+  deleteReviewById: jest.fn((req, res) => res.status(204).json({ message: 'Review deleted' })),
 }));
 
-describe('Review Route Middleware Tests', () => {
+describe('Review Routes', () => {
   const app = express();
   app.use(express.json());
   app.use('/reviews', reviewRoutes);
 
-  it('should apply validateGetReview middleware on GET /reviews', async () => {
-    const mockReviews = [{ title: 'Great product' }, { title: 'Not so great' }];
-    Review.find.mockResolvedValue(mockReviews);
-
-    await request(app).get('/reviews');
-
-    expect(reviewRules.validateGetReview).toHaveBeenCalled();
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
-  it('should apply validateGetReview middleware on GET /reviews/:reviewId', async () => {
-    const mockReview = { _id: '1', title: 'Amazing service' };
-    Review.findById.mockResolvedValue(mockReview);
+  describe('GET /reviews', () => {
+    it('should call validateGetReview middleware and getReviews controller', async () => {
+      await request(app).get('/reviews');
 
-    await request(app).get('/reviews/1');
-
-    expect(reviewRules.validateGetReview).toHaveBeenCalled();
+      expect(reviewRules.validateGetReview).toHaveBeenCalled();
+      expect(reviewController.getReviews).toHaveBeenCalled();
+    });
   });
 
-  it('should apply ensureLogin and validateAddReview middleware on POST /reviews', async () => {
-    const mockNewReview = { title: 'Great product!' };
-    Review.create.mockResolvedValue(mockNewReview);
+  describe('GET /reviews/:reviewId', () => {
+    it('should call validateGetReview middleware and getReviewById controller', async () => {
+      await request(app).get('/reviews/review123');
 
-    await request(app)
-      .post('/reviews')
-      .send({ title: 'Great product!' });
-
-    expect(ensureLogin).toHaveBeenCalled();
-    expect(reviewRules.validateAddReview).toHaveBeenCalled();
-    expect(utilities.validate).toHaveBeenCalled();
+      expect(reviewRules.validateGetReview).toHaveBeenCalled();
+      expect(reviewController.getReviewById).toHaveBeenCalled();
+    });
   });
 
-  it('should apply ensureLogin and validateAddReview middleware on PUT /reviews/:reviewId', async () => {
-    const mockUpdatedReview = { _id: '1', title: 'Updated review title' };
-    Review.findByIdAndUpdate.mockResolvedValue(mockUpdatedReview);
+  describe('POST /reviews', () => {
+    it('should apply ensureLogin, validateAddReview, and call addReview controller', async () => {
+      await request(app).post('/reviews').send({
+        carId: '670fee462c904f621ec06b12',
+        rating: 5,
+        comment: 'Great car!',
+      });
 
-    await request(app)
-      .put('/reviews/1')
-      .send({ title: 'Updated review title' });
-
-    expect(ensureLogin).toHaveBeenCalled();
-    expect(reviewRules.validateAddReview).toHaveBeenCalled();
-    expect(utilities.validate).toHaveBeenCalled();
+      expect(ensureLogin).toHaveBeenCalled();
+      expect(reviewRules.validateAddReview).toHaveBeenCalled();
+      expect(utilities.validate).toHaveBeenCalled();
+      expect(reviewController.addReview).toHaveBeenCalled();
+    });
   });
 
-  it('should apply validateDeleteReview, ensureLogin, and ensureAdmin middleware on DELETE /reviews/:reviewId', async () => {
-    Review.findByIdAndDelete.mockResolvedValue({ _id: '1', title: 'Review to delete' });
+  describe('PUT /reviews/:reviewId', () => {
+    it('should apply ensureLogin, validateAddReview, and call editReviewById controller', async () => {
+      await request(app)
+        .put('/reviews/review123')
+        .send({ rating: 4, comment: 'Updated comment' });
 
-    await request(app).delete('/reviews/1');
+      expect(ensureLogin).toHaveBeenCalled();
+      expect(reviewRules.validateAddReview).toHaveBeenCalled();
+      expect(utilities.validate).toHaveBeenCalled();
+      expect(reviewController.editReviewById).toHaveBeenCalled();
+    });
+  });
 
-    expect(reviewRules.validateDeleteReview).toHaveBeenCalled();
-    expect(ensureLogin).toHaveBeenCalled();
-    expect(ensureAdmin).toHaveBeenCalled();
+  describe('DELETE /reviews/:reviewId', () => {
+    it('should apply validateDeleteReview, ensureLogin, ensureAdmin, and call deleteReviewById controller', async () => {
+      await request(app).delete('/reviews/review123');
+
+      expect(reviewRules.validateDeleteReview).toHaveBeenCalled();
+      expect(ensureLogin).toHaveBeenCalled();
+      expect(ensureAdmin).toHaveBeenCalled();
+      expect(reviewController.deleteReviewById).toHaveBeenCalled();
+    });
   });
 });
